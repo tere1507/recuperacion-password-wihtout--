@@ -10,9 +10,10 @@ export const ForgotPasswordForm = ( { onSwitchToLogin }) => { //({ onSwitchToLog
     const validateEmail = (email) => {
         //regex simple to validation email Valida el formato del correo electrónico ingresado por el usuario.
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(String(email).toLowerCase())//re.test->comprueba si la caena pasada como argumento coincide con el oatron de regex(true-false)retorna el email en una cadena y lo convierte en minuscula
+        return re.test(String(email).toLowerCase())//re.test->comprueba si la cadena pasada como argumento coincide con el patron de regex(true-false)retorna el email en una cadena y lo convierte en minuscula
 
     }
+
     const handleSubmit = (e) => {//funcion que se activa cuando el usuario da click en el button enviar
         e.preventDefault();//previene la recarga de la página y realiza validaciones
 
@@ -37,6 +38,7 @@ export const ForgotPasswordForm = ( { onSwitchToLogin }) => { //({ onSwitchToLog
             if(err) {
                 setError(err.reason || 'Error to sumbit recovery email')
             } else {
+                
                 setSuccessMessage('if the email exist in our sistem, you will receive a link to reset your password')
                 setEmail('')//clear to field after to sending
             }

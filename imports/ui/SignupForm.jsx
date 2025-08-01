@@ -14,7 +14,7 @@ export const SignupForm = ({ onSwitchToLogin })=> {
             return 'The password must be at leats 6 characters long'
         }
         // Puedes añadir más validaciones de fortaleza aquí (mayúsculas, números, símbolos)
-        return;
+        return;//si la validacion es exitosa no develve nada
     }
 
     //function que se ejecuta cuando se envia el formulario (registrarse, iniciar sesion) recibe un objeto evento como argunmeto

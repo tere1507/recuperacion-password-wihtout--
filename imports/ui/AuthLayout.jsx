@@ -13,7 +13,7 @@ export const AuthLayout = () => {
         switch (currentView) { //se encarga de retornar el formulario segun currentView
             case 'login':
                 return (
-                    <>
+                    <> {/**Esto es un Fragmento de React. Permite agrupar varios elementos hijos sin añadir un nodo extra al DOM */}
                     <LoginForm //nos rederiza al loginForm
                     onSwitchToSignup={() => setCurrentView('signup')} // si el estado es signup retorna el LoginForm
                     onSwitchToForgotPassword={() => setCurrentView('forgotPassword')}
@@ -51,6 +51,8 @@ export const AuthLayout = () => {
                 )
             }
     };
+
+    //Renderizado Principal del Componente AuthLayout Devuelve el JSX que será renderizado en el navegador.
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">

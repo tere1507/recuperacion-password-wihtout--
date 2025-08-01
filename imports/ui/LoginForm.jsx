@@ -51,7 +51,7 @@ export const LoginForm = ({ onSwitchToSignup, onSwitchToForgotPassword }) => { /
                 type="email"
                 id="email"
                 name="email"
-                value={email} // El valor del campo está "controlado" por la variable de estado emailen javascript
+                value={email} // El valor del campo está "controlado" por la variable de estado email en javascript
                 onChange={(e) => setEmail(e.target.value)} //Actualiza el estado email cada vez que el usuario escribe.
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 required
@@ -81,21 +81,21 @@ export const LoginForm = ({ onSwitchToSignup, onSwitchToForgotPassword }) => { /
             </button>
 
             {/**Esta sección final contiene dos botones (enlaces) para navegar a otras vistas de autenticación a la de SinUp and ForgotPassword */}
-            <div className="text-center text-sm">
+            <div className="text-center text-sm mb-10">
                 <button 
                 type="button" //Not to send the form
                 onClick={onSwitchToSignup}//llamamos a la prop onSwitchToSignup para que el componente padre cambie la vista
-                className="font-medium text-indigo-600 hover:text-indigo-500 mr-4"
+                className="font-medium text-indigo-700 hover:text-indigo-400 mr-15 ml-12 mb-5"
                 >
-                    Do not have an acoount yet? Register here!
+                    Do not have an acoount yet?
                 </button>
 
                 <button
                 type="button"
                 onClick={onSwitchToForgotPassword}//llamamos a la prop onSwitchToForgotPassword para que el componente padre cambie la vista
-                className="font-medium text-indigo-600 hover:text-indigo-500 mr-4"
+                className="font-medium text-indigo-700 hover:text-indigo-400 mr-4"
                 >
-                    Forgot your Password? Click here!
+                    Forgot your Password?
                 </button>
             </div>
         </form>

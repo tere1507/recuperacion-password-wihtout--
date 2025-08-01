@@ -14,29 +14,34 @@ export const App = () => {
   // ---------------------------------------------------
 
   const { user, loggingIn } = useTracker(() => {
-    const handle = Meteor.subscribe('currentUserData');
-    const isReady = handle.ready();
+    const handle = Meteor.subscribe('currentUserData');//estamos pidiendo que nos de los datos del usuer actual
+    const isReady = handle.ready();//comprueba si el servidor ya nos a enviado esos datos
     return {
-      user: isReady ? Meteor.user() : null,
-      loggingIn: Meteor.loggingIn()
+      user: isReady ? Meteor.user() : null,//si los datos ya estan listos obtenemos el objeto del user logueado
+      loggingIn: Meteor.loggingIn()//nos dice si el user esta en proceso de inicio de sesion
     };
-  }, []);
+  }, []);//[]-->second arg 
 
   // *******************************************************************
   // CAMBIO CLAVE: Inicializar resetToken basado en la URL actual
   // Esto asegura que el token esté disponible desde el primer renderizado
   // si la URL es de restablecimiento de contraseña.
   // *******************************************************************
-  const getInitialResetToken = () => {
-    const path = window.location.pathname;
+
+  const getInitialResetToken = () => {//Se va a usar para leer la URL actual del navegador y obtener el token si la URL tiene el formato /reset-password/
+    const path = window.location.pathname; //obtiene la ruta de la URL actual, es decir, sin el dominio ni los parámetros.->https://misitio.com/reset-password/ABC123->"/reset-password/ABC123"
+
     // Comprobamos si la URL actual es de restablecimiento de contraseña
-    if (path.startsWith('/reset-password/')) {
+    if (path.startsWith('/reset-password/')) {//->"/reset-password/ABC123"
+
       // Extraemos el token de la URL
-      return path.split('/').pop();
+      return path.split('/').pop();//convierte -> "/reset-password/ABC123"-> ["", "reset-password", "ABC123"]
+      //.pop() toma el último elemento del array: "ABC123"->  el token único que se usará para validar el restablecimiento de contraseña.
     }
-    return null;
+    return null;//si la funcion no empieza con /reset-password/ la funcion devuelve null lo que significa que no se encontro nungun token
   };
 
+  //resetToken es la variable que guardará el token de restablecimiento (o null si no hay ninguno).
   const [resetToken, setResetToken] = useState(getInitialResetToken());
 
   // useEffect para registrar Accounts.onResetPasswordLink solo una vez
@@ -53,13 +58,15 @@ export const App = () => {
 
     // Opcional: Limpiar el token si la URL cambia y ya no es de reset
     // Esto es útil si el usuario navega manualmente fuera del flujo de reset.
-    const handlePopState = () => { // Usamos popstate para cambios en la URL (back/forward)
-      if (!window.location.pathname.startsWith('/reset-password/')) {
-        setResetToken(null);
+
+    const handlePopState = () => { // Usamos popstate para cambios en la URL (back/forward) y la funcion se dispara cuando el user presiona los botones(navega)
+      if (!window.location.pathname.startsWith('/reset-password/')) {//verifica si la URL ya no comienza con '/reset-password/ entonces:
+        setResetToken(null); //el user navego fuera del la URL de restablecimiento lo que hace que el navegador deje de mostrar la vista de restablecimiento
       }
     };
-    window.addEventListener('popstate', handlePopState);
+    window.addEventListener('popstate', handlePopState);//popstate-->back/forward
     return () => {
+      //removemos el listener para evitar que el cod intente escuchar eventos en un componente que ya no existe
       window.removeEventListener('popstate', handlePopState);
     };
   }, []); // El array vacío asegura que el efecto se ejecute solo una vez al montar.
@@ -80,9 +87,9 @@ export const App = () => {
     });
   };
 
-  // 1. Si hay un token de restablecimiento, renderiza ResetPasswordForm.
-  //    Esta es la condición de más alta prioridad para la interfaz.
-  if (resetToken) {
+  // Si hay un token de restablecimiento, renderiza ResetPasswordForm.
+  //  Esta es la condición de más alta prioridad para la interfaz.
+  if (resetToken) {//si resetToken tiene un valor significa que el user esta en proceso de recuperacion de password
     return <ResetPasswordForm token={resetToken} />;
   }
 
@@ -107,7 +114,7 @@ export const App = () => {
       <div className="w-full max-w-4xl bg-white rounded-lg shadow-md p-8">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-extrabold text-indigo-900">
-            <strong>Welcome to Meteor!</strong>
+            <strong>Welcome to App Tere❤!</strong>
           </h1>
           <div className="flex items-center space-x-4">
             <span className="text-gray-700 text-lg">

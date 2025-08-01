@@ -2,21 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { Accounts } from 'meteor/accounts-base';
 
 // El componente ahora recibe 'token' como una prop
-export const ResetPasswordForm = ({ token }) => {
+export const ResetPasswordForm = ({ token }) => { //desestructuración de props->espera recibir una unica propiedad de su componente padre ahora es-> App.jsx es quien le pasa el token obtenido de la URL
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);//isSubmitting-->booleana-> indica si el proceso de envio de reset esta en curso, como inicia en false significa que no hay ningun proceso en curso
 
   // La validación del token es directa, ya que viene como prop.
   useEffect(() => {
-    if (!token) {
+    if (!token) {//si token tiene valor null, undefinied, cadena vacia o cualquier valor falso entonces llamamos a la function serError
       setError('Token no válido o no encontrado. Por favor, usa el enlace completo del correo.');
     }
-  }, [token]);
+  }, [token]);//El useEffect o efecto se ejecutará cada vez que cambie el valor de token y se valide el nuevo
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e) => {//definimos la funcion handleSubmit que se activara cuando el formulario sea enviado
     e.preventDefault();
     if (isSubmitting) return;
 
@@ -38,10 +38,13 @@ export const ResetPasswordForm = ({ token }) => {
       return;
     }
 
+    //si todas las validaciones pasan, se establece isSubmitting a true , visualmente desactiva el boton de envio ya que la operacion esta en curso
     setIsSubmitting(true);
 
+    //si todas las validaciones anteriores son falsas activamos el metodo de Meteor para restablecer the password
+    //Esta es la llamada a la API de Meteor para restablecer la contraseña.
     Accounts.resetPassword(token, newPassword, (err) => {
-      setIsSubmitting(false);
+      setIsSubmitting(false);//dentro del callback estabelcemos setIsSubmitting a false que habilita el boton de envio asi el form haya tenido exito o haya fallado
       if (err) {
         setError(err.reason || 'Error al restablecer la contraseña. El enlace puede haber expirado o ser inválido.');
       } else {
@@ -59,7 +62,7 @@ export const ResetPasswordForm = ({ token }) => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
         <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md text-center">
-          <h2 className="text-xl font-bold mb-4">Token inválido</h2>
+          <h2 className="text-xl font-bold mb-4">Token invalid</h2>
           <p className="text-gray-700 mb-4">
             El enlace de restablecimiento de contraseña es inválido o ha expirado.
           </p>
@@ -74,6 +77,7 @@ export const ResetPasswordForm = ({ token }) => {
     );
   }
 
+  //Renderizado Principal del Formulario (JSX)
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -111,10 +115,11 @@ export const ResetPasswordForm = ({ token }) => {
           </div>
 
           <button
-            type="submit"
-            disabled={isSubmitting}
+            type="submit"//Dispara el botoN onSubmit
+            disabled={isSubmitting}//si isSubmitting es true el boton se desactiva evitando multiples envios
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
           >
+            {/**Renderizado condicional Si isSubmitting es true, el texto es "Restableciendo..."; de lo contrario, es "Reset Password". */}
             {isSubmitting ? 'Restableciendo...' : 'Reset Password'}
           </button>
         </form>
